@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: var(--color-backgrounds);
+}
+button {
+  cursor: pointer;
+}
+/* Start Landing Page */
+
+/* Appear animations */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 700ms ease-out both;
+}
+
+/* Optional delays for staggering */
+.delay-100 {
+  animation-delay: 100ms;
+}
+.delay-200 {
+  animation-delay: 200ms;
+}
+.delay-300 {
+  animation-delay: 300ms;
+}
+.delay-400 {
+  animation-delay: 400ms;
+}
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+@media (min-width: 768px) {
+  .info::after {
+    content: "";
+    position: absolute;
+    background-color: var(--color-backgrounds);
+    top: 100%;
+    left: -2px;
+    width: 101%;
+    height: 20%;
+    border: 2px solid #eeeeee85;
+    z-index: 5;
+  }
+  .img-box::after {
+    content: "";
+    position: absolute;
+    background-color: var(--color-backgrounds);
+    top: 100%;
+    left: -4px;
+    width: 102%;
+    height: 20%;
+    border: 2px solid #eeeeee85;
+    border-left-width: 4px;
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* إخفاء الـ scrollbar في Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+/* End Landing Page */
+
