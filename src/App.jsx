@@ -19,7 +19,7 @@ function App() {
       <NytProvider>
         <ToastProvider>
           <Routes>
-            <Route path="/" element={<Layout />}>
+            <Route path="/E-commerce-books/" element={<Layout />}>
               <Route
                 index
                 element={
@@ -29,7 +29,7 @@ function App() {
                 }
               />
               <Route
-                path="categories"
+                path="/E-commerce-books/categories"
                 element={
                   <Suspense fallback={<Loader />}>
                     <Categories />
@@ -37,7 +37,7 @@ function App() {
                 }
               />
               <Route
-                path="about"
+                path="/E-commerce-books/about"
                 element={
                   <Suspense fallback={<Loader />}>
                     <About />
@@ -45,7 +45,7 @@ function App() {
                 }
               />
               <Route
-                path="contact"
+                path="/E-commerce-books/contact"
                 element={
                   <Suspense fallback={<Loader />}>
                     <Contact />
@@ -53,7 +53,7 @@ function App() {
                 }
               />
               <Route
-                path="favorite-books"
+                path="/E-commerce-books/favorite-books"
                 element={
                   <Suspense fallback={<Loader />}>
                     <FavoriteBooks />
@@ -61,7 +61,7 @@ function App() {
                 }
               />
               <Route
-                path="shop-cart"
+                path="/E-commerce-books/shop-cart"
                 element={
                   <Suspense fallback={<Loader />}>
                     <ShopCart />
@@ -69,7 +69,7 @@ function App() {
                 }
               />
               <Route
-                path={`bookDetails/:listId/:bookId`}
+                path={`/E-commerce-books/bookDetails/:listId/:bookId`}
                 element={
                   <Suspense fallback={<Loader />}>
                     <BookDetails />

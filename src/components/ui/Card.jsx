@@ -16,7 +16,9 @@ export default function Card({
   return (
     <Section>
       <div className="card relative w-50 md:w-60 bg-backgrounds shadow-2xl dark:shadow-md rounded-lg overflow-hidden h-full flex flex-col dark:shadow-button-border mx-auto">
-        <Link to={`/bookDetails/${listIndex + 1}/${bookIndex + 1}`}>
+        <Link
+          to={`/E-commerce-books/bookDetails/${listIndex + 1}/${bookIndex + 1}`}
+        >
           <img
             src={imgCover}
             alt={title}

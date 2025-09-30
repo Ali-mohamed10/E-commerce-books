@@ -16,10 +16,10 @@ import {
 import { useUser } from "@clerk/clerk-react";
 
 export const links = [
-  { to: "/", label: "Home" },
-  { to: "/categories", label: "Categories" },
-  { to: "/about", label: "About Us" },
-  { to: "/contact", label: "Contact Us" },
+  { to: "/E-commerce-books/", label: "Home" },
+  { to: "/E-commerce-books/categories", label: "Categories" },
+  { to: "/E-commerce-books/about", label: "About Us" },
+  { to: "/E-commerce-books/contact", label: "Contact Us" },
 ];
 export default function Nav() {
   const { theme, setTheme } = useTheme();
@@ -97,7 +97,7 @@ export default function Nav() {
               <DarkModeOutlinedIcon />
             )}
           </button>
-          <Link to="/favorite-books">
+          <Link to="/E-commerce-books/favorite-books">
             <div
               className={`relative cursor-pointer hover:text-hover transition duration-300 mr-4 ${
                 location.pathname === "/favorite-books" ? "text-main" : ""
@@ -109,7 +109,7 @@ export default function Nav() {
               </span>
             </div>
           </Link>
-          <Link to="/shop-cart">
+          <Link to="/E-commerce-books/shop-cart">
             <div
               className={`mr-4 cursor-pointer hover:text-hover transition duration-300 ${
                 location.pathname === "/shop-cart" ? "text-main" : ""
