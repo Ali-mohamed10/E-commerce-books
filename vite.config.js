@@ -11,5 +11,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/E-commerce-books/", // أضف هذا السطر
+  base: "/E-commerce-books/", 
 });
