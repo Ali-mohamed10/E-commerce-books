@@ -97,6 +97,7 @@ export default function ShopCart() {
                     <img
                       src={cart.imgCover}
                       alt={cart.title}
+                      loading="lazy"
                       className="h-32 w-full"
                     />
                   </div>

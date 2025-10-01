@@ -48,6 +48,7 @@ export default function Nav() {
           <img
             src={logo}
             alt="Logo"
+            loading="lazy"
             className="inline-block w-11 md:w-16 mr-4"
           />
           <h1 className="text-xl md:text-2xl font-bold mr-4">NYT Books</h1>

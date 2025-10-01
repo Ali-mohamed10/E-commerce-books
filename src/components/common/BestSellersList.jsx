@@ -23,10 +23,11 @@ export default function BestSellersList() {
         </h2>
         <div className="flex flex-col md:flex-row items-center justify-center rounded-2xl border-2 shadow-xl dark:shadow-button-border mb-10">
           <div className="imgs my-5 w-[40%] md:w-[19%] mx-auto bg-whites rounded-2xl bg-gradient-to-b from-whites via-main/20 to-whites flex-col justify-center items-center">
-            <img src={BestSeller} alt="Best Seller" />
+            <img src={BestSeller} alt="Best Seller" loading="lazy" />
             <img
               src={Offer}
               alt="Offer"
+              loading="lazy"
               className="hidden md:block h-80 -translate-y-6 mx-auto"
             />
           </div>

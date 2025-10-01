@@ -35,6 +35,7 @@ export default function BookDetails() {
           <img
             src={book.book_image}
             alt={book.title}
+            loading="lazy"
             className="w-50 md:w-11/12"
           />
         </div>

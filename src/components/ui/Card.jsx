@@ -22,6 +22,7 @@ export default function Card({
           <img
             src={imgCover}
             alt={title}
+            loading="lazy"
             className="w-full h-60 md:h-70 object-cover"
           />
         </Link>

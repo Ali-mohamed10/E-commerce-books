@@ -12,11 +12,13 @@ export default function LandingPage() {
         <img
           src={firstCover}
           alt="first cover"
+          loading="lazy"
           className="book1 absolute top-1/2 -left-4/5 -translate-y-1/2 animate-fade-in-up delay-200"
         />
         <img
           src={secondCover}
           alt="second cover"
+          loading="lazy"
           className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400"
         />
         <div className="flex flex-col md:flex-row">
@@ -51,6 +53,7 @@ export default function LandingPage() {
             <img
               src={logo}
               alt="Books"
+              loading="lazy"
               className="mx-auto w-1/3 md:w-1/2 animate-fade-in-up"
             />
           </div>

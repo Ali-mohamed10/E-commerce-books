@@ -49,6 +49,7 @@ const Footer = () => {
             <img
               src={logo}
               alt="Logo"
+              loading="lazy"
               className="inline-block w-11 md:w-16 mr-4"
             />
             <h3 className="text-3xl font-extrabold text-second">NYT Books</h3>

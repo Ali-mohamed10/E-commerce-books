@@ -80,6 +80,7 @@ export default function About() {
               <img
                 src={book1}
                 alt="Books illustration"
+                loading="lazy"
                 className="h-full w-full object-cover"
               />
             </div>
