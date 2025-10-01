@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { cn } from "/lib/utils";
 
@@ -8,7 +8,7 @@ const Sparkle = ({ id, x, y, color, delay, scale }) => {
   return (
     <motion.svg
       key={id}
-      className="pointer-events-none absolute z-20"
+      className="pointer-events-none absolute z-20 will-change-transform"
       initial={{ opacity: 0, left: x, top: y }}
       animate={{
         opacity: [0, 1, 0],
@@ -32,10 +32,13 @@ export const SparklesText = ({
   children,
   colors = { first: "var(--main-color)", second: "var(--main-color)" },
   className,
-  sparklesCount = 10,
+  sparklesCount = 5,
   ...props
 }) => {
   const [sparkles, setSparkles] = useState([]);
+  const containerRef = useRef(null);
+  const isInViewRef = useRef(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const generateStar = () => {
@@ -55,25 +58,50 @@ export const SparklesText = ({
     };
 
     const updateStars = () => {
+      if (!isInViewRef.current) return;
+      
       setSparkles((currentSparkles) =>
         currentSparkles.map((star) => {
           if (star.lifespan <= 0) {
             return generateStar();
           } else {
-            return { ...star, lifespan: star.lifespan - 0.1 };
+            return { ...star, lifespan: star.lifespan - 0.2 };
           }
         })
       );
     };
 
-    initializeStars();
-    const interval = setInterval(updateStars, 100);
+    // Intersection Observer to pause when not in view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && !intervalRef.current) {
+          intervalRef.current = setInterval(updateStars, 200);
+        } else if (!entry.isIntersecting && intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-    return () => clearInterval(interval);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    initializeStars();
+
+    return () => {
+      observer.disconnect();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [colors.first, colors.second, sparklesCount]);
 
   return (
     <div
+      ref={containerRef}
       className={cn("text-6xl font-bold", className)}
       {...props}
       style={{

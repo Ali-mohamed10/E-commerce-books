@@ -1,3 +1,4 @@
+import { memo } from "react";
 import logo from "../../assets/imgs/icons8-book-96.png";
 import Gradient from "../ui/gradient";
 import firstCover from "../../assets/imgs/3D book-1.png";
@@ -5,7 +6,7 @@ import secondCover from "../../assets/imgs/3D book-2.png";
 import { TextAnimate } from "../magicui/text-animate";
 import { SparklesText } from "../magicui/sparkles-text";
 
-export default function LandingPage() {
+function LandingPage() {
   return (
     <div className="landing-page container m-auto h-screen relative">
       <Gradient className="h-4/5 flex justify-center mt-2 rounded-xl overflow-hidden">
@@ -13,13 +14,13 @@ export default function LandingPage() {
           src={firstCover}
           alt="first cover"
           loading="lazy"
-          className="book1 absolute top-1/2 -left-4/5 -translate-y-1/2 animate-fade-in-up delay-200"
+          className="book1 absolute top-1/2 -left-4/5 -translate-y-1/2 animate-fade-in-up delay-200 will-change-transform"
         />
         <img
           src={secondCover}
           alt="second cover"
           loading="lazy"
-          className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400"
+          className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400 will-change-transform"
         />
         <div className="flex flex-col md:flex-row h-full md:h-auto">
           <div className="info w-full text-text relative md:w-1/2 p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
@@ -62,3 +63,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+export default memo(LandingPage);

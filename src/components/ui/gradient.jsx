@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, ReactNode } from "react";
+import React, { useEffect, useRef, ReactNode } from "react";
 let stylesInjected = false;
 const injectGlobalStyles = () => {
   if (stylesInjected) return;
@@ -22,23 +22,49 @@ const injectGlobalStyles = () => {
   stylesInjected = true;
 };
 const Gradient = ({ children, className = "" }) => {
+  const containerRef = useRef(null);
+  const isInViewRef = useRef(false);
+
   useEffect(() => {
     injectGlobalStyles();
+
+    // Pause animation when not in view to save performance
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+        if (containerRef.current) {
+          const elements = containerRef.current.querySelectorAll('[data-animated]');
+          elements.forEach(el => {
+            el.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+          });
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
+
   return (
-    <div className={`relative group ${className}`}>
+    <div ref={containerRef} className={`relative group ${className}`}>
       <div
-        className="absolute -inset-2 bg-gradient-to-r from-main via-background to-main rounded-xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"
+        data-animated
+        className="absolute -inset-2 bg-gradient-to-r from-main via-background to-main rounded-xl opacity-60 group-hover:opacity-80 transition duration-1000 group-hover:duration-200 will-change-transform"
         style={{
           backgroundSize: "200% 200%",
-          animation: "move-gradient 4s ease-in-out infinite",
+          animation: "move-gradient 6s ease-in-out infinite",
         }}
       ></div>
       <div
-        className="relative rounded-xl bg-gradient-to-r from-main via-background to-main p-0.5 transition-all duration-500"
+        data-animated
+        className="relative rounded-xl bg-gradient-to-r from-main via-background to-main p-0.5 transition-all duration-500 will-change-transform"
         style={{
           backgroundSize: "200% 200%",
-          animation: "move-gradient 4s ease-in-out infinite",
+          animation: "move-gradient 6s ease-in-out infinite",
         }}
       >
         {children}

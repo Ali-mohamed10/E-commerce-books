@@ -1,16 +1,17 @@
+import { memo } from "react";
 import {
   ScrollVelocityContainer,
   ScrollVelocityRow,
 } from "../ui/scroll-based-velocity";
 
-export default function ScrollBasedVelocityDemo() {
+function ScrollBasedVelocityDemo() {
   return (
     <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-8">
       <ScrollVelocityContainer className="text-4xl md:text-7xl md:leading-[5rem] font-bold tracking-[-0.02em] text-black/20 dark:text-[#eee]/20">
-        <ScrollVelocityRow baseVelocity={20} direction={1}>
+        <ScrollVelocityRow baseVelocity={15} direction={1}>
           Best Sellers Collection{" # "}
         </ScrollVelocityRow>
-        <ScrollVelocityRow baseVelocity={20} direction={-1}>
+        <ScrollVelocityRow baseVelocity={15} direction={-1}>
           Special Offers Available{" $ "}
         </ScrollVelocityRow>
       </ScrollVelocityContainer>
@@ -19,3 +20,5 @@ export default function ScrollBasedVelocityDemo() {
     </div>
   );
 }
+
+export default memo(ScrollBasedVelocityDemo);
