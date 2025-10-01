@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { NytContext } from "../contexts/NytContext";
 import CartButton from "../components/ui/CartButton";

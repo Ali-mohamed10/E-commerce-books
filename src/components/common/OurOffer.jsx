@@ -8,7 +8,7 @@ import { BackgroundLines } from "../ui/background-lines";
 import { BorderBeam } from "../magicui/border-beam";
 import { TextAnimate } from "../magicui/text-animate";
 
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import Section from "../ui/AnimationSection";
 
 export default function OurOffer() {

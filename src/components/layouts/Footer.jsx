@@ -2,7 +2,7 @@
 
 import React from "react";
 import logo from "../../assets/imgs/icons8-book-96.png";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { links } from "./Navbar";
 const GitHubIcon = ({ size = 24, className = "" }) => (
   <svg

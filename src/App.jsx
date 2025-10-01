@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -19,7 +19,7 @@ function App() {
       <NytProvider>
         <ToastProvider>
           <Routes>
-            <Route path="E-commerce-books" element={<Layout />}>
+            <Route path="/" element={<Layout />}>
               <Route
                 index
                 element={
@@ -29,7 +29,7 @@ function App() {
                 }
               />
               <Route
-                path="/E-commerce-books/categories"
+                path="categories"
                 element={
                   <Suspense fallback={<Loader />}>
                     <Categories />
@@ -37,7 +37,7 @@ function App() {
                 }
               />
               <Route
-                path="/E-commerce-books/about"
+                path="about"
                 element={
                   <Suspense fallback={<Loader />}>
                     <About />
@@ -45,7 +45,7 @@ function App() {
                 }
               />
               <Route
-                path="/E-commerce-books/contact"
+                path="contact"
                 element={
                   <Suspense fallback={<Loader />}>
                     <Contact />
@@ -53,7 +53,7 @@ function App() {
                 }
               />
               <Route
-                path="/E-commerce-books/favorite-books"
+                path="favorite-books"
                 element={
                   <Suspense fallback={<Loader />}>
                     <FavoriteBooks />
@@ -61,7 +61,7 @@ function App() {
                 }
               />
               <Route
-                path="/E-commerce-books/shop-cart"
+                path="shop-cart"
                 element={
                   <Suspense fallback={<Loader />}>
                     <ShopCart />
@@ -69,7 +69,7 @@ function App() {
                 }
               />
               <Route
-                path={`/E-commerce-books/bookDetails/:listId/:bookId`}
+                path={`bookDetails/:listId/:bookId`}
                 element={
                   <Suspense fallback={<Loader />}>
                     <BookDetails />
@@ -93,3 +93,4 @@ function App() {
 }
 
 export default App;
+
