@@ -16,7 +16,7 @@ import {
 import { useUser } from "@clerk/clerk-react";
 
 export const links = [
-  { to: "/E-commerce-books/", label: "Home" },
+  { to: "/E-commerce-books", label: "Home" },
   { to: "/E-commerce-books/categories", label: "Categories" },
   { to: "/E-commerce-books/about", label: "About Us" },
   { to: "/E-commerce-books/contact", label: "Contact Us" },

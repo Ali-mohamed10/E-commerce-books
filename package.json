@@ -1,5 +1,6 @@
 {
   "name": "ecommerce-books",
+  "homepage": "https://ali-mohamed10.github.io/E-commerce-books/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +9,8 @@
     "build": "vite build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.49.0",

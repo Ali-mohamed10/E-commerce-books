@@ -19,7 +19,7 @@ function App() {
       <NytProvider>
         <ToastProvider>
           <Routes>
-            <Route path="/E-commerce-books/" element={<Layout />}>
+            <Route path="E-commerce-books" element={<Layout />}>
               <Route
                 index
                 element={
