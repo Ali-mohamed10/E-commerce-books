@@ -4,6 +4,8 @@ A modern, feature-rich e-commerce platform for browsing and purchasing books fro
 
 ![NYT Books Platform](./public/Screenshot.png)
 
+![Best Sellers Lists](./public/Screenshot-2.png)
+
 ## 🌐 Live Demo
 
 **[View Live Demo](https://ali-mohamed10.github.io/E-commerce-books/)**
