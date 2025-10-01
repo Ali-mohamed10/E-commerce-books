@@ -69,7 +69,7 @@ function App() {
                 }
               />
               <Route
-                path={`bookDetails/:listId/:bookId`}
+                path={`bookDetails/:isbn`}
                 element={
                   <Suspense fallback={<Loader />}>
                     <BookDetails />

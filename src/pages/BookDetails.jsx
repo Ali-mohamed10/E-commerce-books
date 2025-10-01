@@ -4,33 +4,51 @@ import { NytContext } from "../contexts/NytContext";
 import CartButton from "../components/ui/CartButton";
 import FavoriteButton from "../components/ui/FavoriteButton";
 import Section from "../components/ui/AnimationSection";
+
+/**
+ * BookDetails Component
+ * Displays detailed information about a specific book
+ * Finds book by ISBN from URL parameter
+ */
 export default function BookDetails() {
   const { data } = useContext(NytContext);
-  const { listId, bookId } = useParams();
+  const { isbn } = useParams();
 
-  if (!data)
+  // Loading state
+  if (!data) {
     return (
       <div className="container mx-auto flex justify-center items-center text-4xl h-80">
         Loading...
       </div>
     );
+  }
 
-  const listIndex = Number(listId) - 1;
-  const bookIndex = Number(bookId) - 1;
-  const list = data?.[listIndex];
-  const book = list?.books?.[bookIndex];
+  // Find book by ISBN across all lists
+  let book = null;
+  let list = null;
 
-  if (!list || !book)
+  for (const currentList of data) {
+    const foundBook = currentList.books.find((b) => b.primary_isbn13 === isbn);
+    if (foundBook) {
+      book = foundBook;
+      list = currentList;
+      break;
+    }
+  }
+
+  // Not found state
+  if (!book || !list) {
     return (
       <div className="container mx-auto flex justify-center items-center text-4xl h-80 font-bold">
-        Not found
+        Book Not Found
       </div>
     );
+  }
 
   return (
     <Section>
       <div className="container mx-auto relative p-5 flex flex-wrap gap-5 rounded-xl my-1.5 bg-gradient-to-r from-main to-[#a36c6c85] dark:to-black">
-        <FavoriteButton listIndex={listIndex} bookIndex={bookIndex} />
+        <FavoriteButton uniqueId={book.uniqueId} />
         <div>
           <img
             src={book.book_image}
@@ -55,7 +73,7 @@ export default function BookDetails() {
             <span className="text-white/80 font-bold">List Name : </span>{" "}
             {list.list_name}
           </p>
-          <CartButton listIndex={listIndex} bookIndex={bookIndex} />
+          <CartButton uniqueId={book.uniqueId} />
 
           <p className="text-white/70 mt-8 max-w-80">
             <span className="text-white/80 font-bold block mb-2">

@@ -10,15 +10,13 @@ export default function Card({
   author,
   price,
   listName,
-  listIndex,
-  bookIndex,
+  uniqueId,
+  isbn,
 }) {
   return (
     <Section>
       <div className="card relative w-50 md:w-60 bg-backgrounds shadow-2xl dark:shadow-md rounded-lg overflow-hidden h-full flex flex-col dark:shadow-button-border mx-auto">
-        <Link
-          to={`/bookDetails/${listIndex + 1}/${bookIndex + 1}`}
-        >
+        <Link to={`/bookDetails/${isbn}`}>
           <img
             src={imgCover}
             alt={title}
@@ -32,9 +30,9 @@ export default function Card({
           <p className="text-main font-bold mb-2 text-2xl">${price}</p>
           <p className="text-sm text-gray-500">{listName}</p>
           <div className="mt-auto mx-auto">
-            <CartButton listIndex={listIndex} bookIndex={bookIndex} />
+            <CartButton uniqueId={uniqueId} />
           </div>
-          <FavoriteButton listIndex={listIndex} bookIndex={bookIndex} />
+          <FavoriteButton uniqueId={uniqueId} />
         </div>
         <BorderBeam
           duration={6}

@@ -4,21 +4,27 @@ import Card from "../components/ui/Card";
 import { SparklesText } from "../components/magicui/sparkles-text";
 import ScrollCards from "../components/common/ScrollCards";
 import Section from "../components/ui/AnimationSection";
+
+/**
+ * FavoriteBooks Component
+ * Displays all books marked as favorites by the user
+ */
 export default function FavoriteBooks() {
   const { data } = useContext(NytContext);
+
+  // Extract all favorite books from all lists
   const favoriteBooks =
-    data?.flatMap((list, listIndex) =>
+    data?.flatMap((list) =>
       list.books
-        .map((book, bookIndex) => ({ book, bookIndex }))
-        .filter(({ book }) => book.isFavorite)
-        .map(({ book, bookIndex }) => ({
+        .filter((book) => book.isFavorite)
+        .map((book) => ({
           title: book.title,
           imgCover: book.book_image,
           author: book.author,
           price: book.price,
           listName: list.list_name,
-          listIndex,
-          bookIndex,
+          uniqueId: book.uniqueId,
+          isbn: book.primary_isbn13,
         }))
     ) || [];
 
@@ -31,18 +37,15 @@ export default function FavoriteBooks() {
         <ScrollCards>
           {favoriteBooks.length !== 0 ? (
             favoriteBooks.map((fav) => (
-              <div
-                key={`${fav.listIndex}-${fav.bookIndex}`}
-                className="flex-none w-64 snap-start"
-              >
+              <div key={fav.uniqueId} className="flex-none w-64 snap-start">
                 <Card
                   title={fav.title}
                   imgCover={fav.imgCover}
                   author={fav.author}
                   price={fav.price}
                   listName={fav.listName}
-                  listIndex={fav.listIndex}
-                  bookIndex={fav.bookIndex}
+                  uniqueId={fav.uniqueId}
+                  isbn={fav.isbn}
                 />
               </div>
             ))

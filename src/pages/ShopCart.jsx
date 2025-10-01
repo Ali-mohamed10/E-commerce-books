@@ -1,86 +1,95 @@
 import { useContext } from "react";
+import { useUser, SignInButton } from "@clerk/clerk-react";
 import { NytContext } from "../contexts/NytContext";
 import CartButton from "../components/ui/CartButton";
 import Section from "../components/ui/AnimationSection";
-import { useUser, SignInButton } from "@clerk/clerk-react";
 
+// WhatsApp contact number
+const WHATSAPP_NUMBER = "+201154167974";
+
+/**
+ * ShopCart Component
+ * Displays user's cart items with quantity controls and checkout
+ */
 export default function ShopCart() {
   const { data, setData } = useContext(NytContext);
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
+
+  // Extract all books marked as "in cart" from all lists
   const cartBooks =
-    data?.flatMap((list, listIndex) =>
+    data?.flatMap((list) =>
       list.books
-        .map((book, bookIndex) => ({ book, bookIndex }))
-        .filter(({ book }) => book.isToCart)
-        .map(({ book, bookIndex }) => ({
+        .filter((book) => book.isToCart)
+        .map((book) => ({
           title: book.title,
           imgCover: book.book_image,
           author: book.author,
           price: book.price,
           listName: list.list_name,
-          listIndex,
-          bookIndex,
+          uniqueId: book.uniqueId,
+          isbn: book.primary_isbn13,
           quantity: book.quantity ?? 1,
         }))
     ) || [];
 
+  // Calculate total price
   const totalPrice = cartBooks.reduce(
-    (sum, item) =>
-      sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+    (sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
     0
   );
 
+  /**
+   * Generate WhatsApp message and open chat
+   */
   const handleProceedToBuy = () => {
-    // إذا كان مسجل دخول، افتح رابط الواتساب مع تفاصيل الطلب
     const cartDetails = cartBooks
-      .map(
-        (book) =>
-          `📚 ${book.title} - ${book.author} - Qty: ${book.quantity} - $${book.price}`
-      )
+      .map((book) => `📚 ${book.title} - ${book.author} - Qty: ${book.quantity} - $${book.price}`)
       .join("\n");
 
     const message = `🛒 Order Details:\n\n${cartDetails}\n\n💰 Total: $${totalPrice}\n\nHello! I would like to purchase these books.`;
-    const whatsappUrl = `https://wa.me/+201154167974?text=${encodeURIComponent(
-      message
-    )}`;
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };
 
-  const increaseQuantity = (listIndex, bookIndex) => {
+  /**
+   * Increase quantity for a specific book in cart
+   * @param {string} uniqueId - Book's unique identifier
+   */
+  const increaseQuantity = (uniqueId) => {
     if (!data) return;
+
     setData((prevData) => {
       if (!prevData) return prevData;
-      return prevData.map((list, li) => {
-        if (li !== listIndex) return list;
-        return {
-          ...list,
-          books: list.books.map((book, bi) => {
-            if (bi !== bookIndex) return book;
-            const current = book.quantity ?? 1;
-            return { ...book, quantity: current + 1 };
-          }),
-        };
-      });
+
+      return prevData.map((list) => ({
+        ...list,
+        books: list.books.map((book) => {
+          if (book.uniqueId !== uniqueId) return book;
+          return { ...book, quantity: (book.quantity ?? 1) + 1 };
+        }),
+      }));
     });
   };
 
-  const decreaseQuantity = (listIndex, bookIndex) => {
+  /**
+   * Decrease quantity for a specific book in cart (minimum 1)
+   * @param {string} uniqueId - Book's unique identifier
+   */
+  const decreaseQuantity = (uniqueId) => {
     if (!data) return;
+
     setData((prevData) => {
       if (!prevData) return prevData;
-      return prevData.map((list, li) => {
-        if (li !== listIndex) return list;
-        return {
-          ...list,
-          books: list.books.map((book, bi) => {
-            if (bi !== bookIndex) return book;
-            const current = book.quantity ?? 1;
-            const next = Math.max(1, current - 1);
-            return { ...book, quantity: next };
-          }),
-        };
-      });
+
+      return prevData.map((list) => ({
+        ...list,
+        books: list.books.map((book) => {
+          if (book.uniqueId !== uniqueId) return book;
+          const newQuantity = Math.max(1, (book.quantity ?? 1) - 1);
+          return { ...book, quantity: newQuantity };
+        }),
+      }));
     });
   };
 
@@ -91,7 +100,7 @@ export default function ShopCart() {
         {cartBooks.length !== 0 ? (
           cartBooks.map((cart) => (
             <Section>
-              <div key={`${cart.listIndex}-${cart.bookIndex}`}>
+              <div key={cart.uniqueId}>
                 <div className="flex flex-wrap gap-5 mt-5 items-center">
                   <div>
                     <img
@@ -106,28 +115,21 @@ export default function ShopCart() {
                     <span className="block text-second text-base md:text-2xl mb-8">
                       price : ${cart.price}
                     </span>
-                    <CartButton
-                      listIndex={cart.listIndex}
-                      bookIndex={cart.bookIndex}
-                    />
+                    <CartButton uniqueId={cart.uniqueId} />
                   </div>
                   <div className="ml-auto">
                     <button
                       className={`text-white ml-2 py-0.5 px-1.5 border border-second bg-main ${
                         cart.quantity === 1 ? "opacity-30" : "cursor-pointer"
                       }`}
-                      onClick={() =>
-                        decreaseQuantity(cart.listIndex, cart.bookIndex)
-                      }
+                      onClick={() => decreaseQuantity(cart.uniqueId)}
                     >
                       -
                     </button>
                     <span className="ml-2">{cart.quantity}</span>
                     <button
                       className="text-white ml-2 py-0.5 px-1.5 border border-second bg-main cursor-pointer"
-                      onClick={() =>
-                        increaseQuantity(cart.listIndex, cart.bookIndex)
-                      }
+                      onClick={() => increaseQuantity(cart.uniqueId)}
                     >
                       +
                     </button>

@@ -14,6 +14,9 @@ export default function NytProvider({ children }) {
       ...list,
       books: (list.books || []).map((book) => ({
         ...book,
+        // Add composite unique ID for books that appear in multiple lists
+        uniqueId: `${list.list_name_encoded || list.list_name}-${book.primary_isbn13}`,
+        listNameEncoded: list.list_name_encoded || list.list_name,
         // Ensure global defaults accessible across components
         isFavorite: Boolean(book.isFavorite),
         isToCart: Boolean(book.isToCart),

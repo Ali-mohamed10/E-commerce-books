@@ -6,6 +6,10 @@ import { TextAnimate } from "../magicui/text-animate";
 import Offer from "../../assets/imgs/Offer.png";
 import BestSeller from "../../assets/imgs/BestSeller.png";
 
+/**
+ * BestSellersList Component
+ * Displays the first book from each NYT bestseller list
+ */
 export default function BestSellersList() {
   const { data } = useContext(NytContext);
 
@@ -42,8 +46,8 @@ export default function BestSellersList() {
                       author={list.books[0].author}
                       price={list.books[0].price}
                       listName={list.list_name}
-                      listIndex={listIndex}
-                      bookIndex={0}
+                      uniqueId={list.books[0].uniqueId}
+                      isbn={list.books[0].primary_isbn13}
                     />
                   </div>
                 );

@@ -3,27 +3,38 @@ import { useContext } from "react";
 import { NytContext } from "../../contexts/NytContext";
 import { ToastContext } from "../../contexts/ToastContext";
 
-export default function FavoriteButton({ listIndex, bookIndex }) {
+/**
+ * FavoriteButton Component
+ * Toggles favorite status for a specific book
+ * @param {string} uniqueId - Composite unique identifier (list-name + ISBN)
+ */
+export default function FavoriteButton({ uniqueId }) {
   const { data, setData } = useContext(NytContext);
   const toast = useContext(ToastContext);
 
+  /**
+   * Toggle favorite status for the book with matching uniqueId
+   */
   const handleFavorite = () => {
     if (!data) return;
+
     setData((prevData) => {
       if (!prevData) return prevData;
-      return prevData.map((list, li) => {
-        if (li !== listIndex) return list;
-        return {
-          ...list,
-          books: list.books.map((book, bi) => {
-            if (bi !== bookIndex) return book;
-            return { ...book, isFavorite: !book.isFavorite };
-          }),
-        };
-      });
+
+      return prevData.map((list) => ({
+        ...list,
+        books: list.books.map((book) => 
+          book.uniqueId === uniqueId 
+            ? { ...book, isFavorite: !book.isFavorite }
+            : book
+        ),
+      }));
     });
   };
-  const isFavorite = data?.[listIndex]?.books?.[bookIndex]?.isFavorite;
+
+  // Find the book by uniqueId across all lists
+  const book = data?.flatMap((list) => list.books).find((b) => b.uniqueId === uniqueId);
+  const isFavorite = book?.isFavorite;
   return (
     <button
       onClick={() => {

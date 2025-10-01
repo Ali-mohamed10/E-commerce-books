@@ -5,26 +5,34 @@ import BooksGrid from "../components/ui/BooksGrid";
 import Pagination from "../components/ui/Pagination";
 import Section from "../components/ui/AnimationSection";
 
+// Pagination configuration
+const BOOKS_PER_PAGE = 12;
+
+/**
+ * Categories Component
+ * Displays all books with filtering, search, and pagination
+ */
 export default function Categories() {
   const { data } = useContext(NytContext);
+
+  // Filter and pagination state
   const [searchTerm, setSearchTerm] = useState("");
   const [authorFilter, setAuthorFilter] = useState("");
   const [listNameFilter, setListNameFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const booksPerPage = 12;
 
   // Collect all books from all lists
   const allBooks = useMemo(() => {
     if (!data) return [];
 
     const books = [];
-    data.forEach((list, listIndex) => {
-      list.books.forEach((book, bookIndex) => {
+    data.forEach((list) => {
+      list.books.forEach((book) => {
         books.push({
           ...book,
-          listIndex,
-          bookIndex,
           listName: list.list_name,
+          uniqueId: book.uniqueId,
+          isbn: book.primary_isbn13,
         });
       });
     });
@@ -70,13 +78,13 @@ export default function Categories() {
   }, [allBooks, searchTerm, authorFilter, listNameFilter]);
 
   // Calculate total pages
-  const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+  const totalPages = Math.ceil(filteredBooks.length / BOOKS_PER_PAGE);
 
   // Get books for current page
   const currentBooks = useMemo(() => {
-    const startIndex = (currentPage - 1) * booksPerPage;
-    return filteredBooks.slice(startIndex, startIndex + booksPerPage);
-  }, [filteredBooks, currentPage, booksPerPage]);
+    const startIndex = (currentPage - 1) * BOOKS_PER_PAGE;
+    return filteredBooks.slice(startIndex, startIndex + BOOKS_PER_PAGE);
+  }, [filteredBooks, currentPage]);
 
   // Reset page when filters change
   const handleFilterChange = () => {

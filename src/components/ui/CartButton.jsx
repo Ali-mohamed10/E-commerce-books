@@ -1,30 +1,41 @@
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useContext } from "react";
 import { NytContext } from "../../contexts/NytContext";
 import { ToastContext } from "../../contexts/ToastContext";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-export default function CartButton({ listIndex, bookIndex }) {
+/**
+ * CartButton Component
+ * Toggles cart status for a specific book
+ * @param {string} uniqueId - Composite unique identifier (list-name + ISBN)
+ */
+export default function CartButton({ uniqueId }) {
   const { data, setData } = useContext(NytContext);
   const toast = useContext(ToastContext);
 
+  /**
+   * Toggle cart status for the book with matching uniqueId
+   */
   const handleAddToCart = () => {
     if (!data) return;
+
     setData((prevData) => {
       if (!prevData) return prevData;
-      return prevData.map((list, li) => {
-        if (li !== listIndex) return list;
-        return {
-          ...list,
-          books: list.books.map((book, bi) => {
-            if (bi !== bookIndex) return book;
-            return { ...book, isToCart: !book.isToCart };
-          }),
-        };
-      });
+
+      return prevData.map((list) => ({
+        ...list,
+        books: list.books.map((book) =>
+          book.uniqueId === uniqueId
+            ? { ...book, isToCart: !book.isToCart }
+            : book
+        ),
+      }));
     });
   };
-  const isToCart = data?.[listIndex]?.books?.[bookIndex]?.isToCart;
+
+  // Find the book by uniqueId across all lists
+  const book = data?.flatMap((list) => list.books).find((b) => b.uniqueId === uniqueId);
+  const isToCart = book?.isToCart;
   return (
     <button
       className="flex items-center gap-2 justify-center text-sm md:text-base font-bold border-1 border-white bg-main/70 hover:bg-main hover:shadow-white shadow-xl mt-4 w-fit text-white py-1 px-4 rounded-xl transition duration-300 cursor-pointer"
