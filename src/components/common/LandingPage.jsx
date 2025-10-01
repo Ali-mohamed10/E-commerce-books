@@ -21,8 +21,8 @@ export default function LandingPage() {
           loading="lazy"
           className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400"
         />
-        <div className="mx-5 flex flex-col md:flex-row h-full md:h-auto">
-          <div className="info w-full text-text relative md:w-1/2 p-4 md:p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
+        <div className="flex flex-col md:flex-row h-full md:h-auto">
+          <div className="info w-full text-text relative md:w-1/2 p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
             <SparklesText className="flex justify-center">
               <TextAnimate
                 animation="blurInUp"
@@ -49,7 +49,7 @@ export default function LandingPage() {
               </TextAnimate>
             </div>
           </div>
-          <div className="img-box w-full h-full md:h-auto text-white relative md:w-1/2 p-4 md:p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
+          <div className="img-box w-full h-full md:h-auto text-white relative md:w-1/2 p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
             <img
               src={logo}
               alt="Books"
