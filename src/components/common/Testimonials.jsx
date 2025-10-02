@@ -41,7 +41,7 @@ export default function Testimonials() {
     },
   ];
   return (
-    <div className="relative py-16">
+    <div className="relative py-16 bg-gradient-to-br from-button-border/30 via-button-border/30 to-whites sm:bg-none">
       <div className="absolute inset-0 -z-10">
         <LightRays
           raysOrigin="top-center"
@@ -53,7 +53,7 @@ export default function Testimonials() {
           mouseInfluence={0.1}
           noiseAmount={0.1}
           distortion={0.05}
-          className="w-full h-full"
+          className="w-full h-full hidden sm:block"
         />
       </div>
       <h2>

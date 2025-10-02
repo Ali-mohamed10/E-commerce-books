@@ -38,7 +38,7 @@ export default function ScrollCards({ children }) {
           grid grid-flow-col auto-cols-max
           grid-rows-1
           gap-4 overflow-x-auto no-scrollbar scroll-smooth
-          snap-x snap-mandatory p-4
+          snap-x snap-mandatory p-4 overflow-y-hidden
         "
       >
         {children}

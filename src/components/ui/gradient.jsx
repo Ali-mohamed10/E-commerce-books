@@ -28,16 +28,28 @@ const Gradient = ({ children, className = "" }) => {
   useEffect(() => {
     injectGlobalStyles();
 
+    const updateAnimation = () => {
+      const isSmallScreen = window.innerWidth < 640; // sm breakpoint
+      if (containerRef.current) {
+        const elements = containerRef.current.querySelectorAll('[data-animated]');
+        elements.forEach(el => {
+          if (isSmallScreen) {
+            el.style.animation = 'none';
+          } else {
+            el.style.animation = isInViewRef.current 
+              ? 'move-gradient 6s ease-in-out infinite' 
+              : '';
+            el.style.animationPlayState = isInViewRef.current ? 'running' : 'paused';
+          }
+        });
+      }
+    };
+
     // Pause animation when not in view to save performance
     const observer = new IntersectionObserver(
       ([entry]) => {
         isInViewRef.current = entry.isIntersecting;
-        if (containerRef.current) {
-          const elements = containerRef.current.querySelectorAll('[data-animated]');
-          elements.forEach(el => {
-            el.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
-          });
-        }
+        updateAnimation();
       },
       { threshold: 0.1 }
     );
@@ -46,14 +58,21 @@ const Gradient = ({ children, className = "" }) => {
       observer.observe(containerRef.current);
     }
 
-    return () => observer.disconnect();
+    // Listen for window resize to handle screen size changes
+    window.addEventListener('resize', updateAnimation);
+    updateAnimation(); // Initial check
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateAnimation);
+    };
   }, []);
 
   return (
     <div ref={containerRef} className={`relative group ${className}`}>
       <div
         data-animated
-        className="absolute -inset-2 bg-gradient-to-r from-main via-background to-main rounded-xl opacity-60 group-hover:opacity-80 transition duration-1000 group-hover:duration-200 will-change-transform"
+        className="absolute -inset-2 bg-backgrounds sm:bg-gradient-to-r sm:from-main sm:via-background sm:to-main rounded-xl opacity-60 group-hover:opacity-80 transition duration-1000 group-hover:duration-200 will-change-transform"
         style={{
           backgroundSize: "200% 200%",
           animation: "move-gradient 6s ease-in-out infinite",

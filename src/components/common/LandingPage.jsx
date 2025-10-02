@@ -1,6 +1,6 @@
 import { memo } from "react";
 import logo from "../../assets/imgs/icons8-book-96.png";
-import Gradient from "../ui/gradient";
+import Gradient from "../ui/Gradient";
 import firstCover from "../../assets/imgs/3D book-1.png";
 import secondCover from "../../assets/imgs/3D book-2.png";
 import { TextAnimate } from "../magicui/text-animate";
@@ -23,7 +23,7 @@ function LandingPage() {
           className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400 will-change-transform"
         />
         <div className="flex flex-col md:flex-row h-full md:h-auto">
-          <div className="info w-full text-text relative md:w-1/2 p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
+          <div className="info rounded-xl md:rounded-none w-full text-text relative md:w-1/2 p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
             <SparklesText className="flex justify-center">
               <TextAnimate
                 animation="blurInUp"
@@ -50,7 +50,7 @@ function LandingPage() {
               </TextAnimate>
             </div>
           </div>
-          <div className="img-box w-full h-full md:h-auto text-white relative md:w-1/2 p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
+          <div className="img-box rounded-xl md:rounded-none w-full h-full md:h-auto text-white relative md:w-1/2 p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
             <img
               src={logo}
               alt="Books"

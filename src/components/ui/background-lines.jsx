@@ -82,7 +82,7 @@ const SVG = ({ svgOptions }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 w-full h-full hidden sm:block"
     >
       {paths.map((path, idx) => (
         <motion.path
