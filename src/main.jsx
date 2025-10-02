@@ -12,7 +12,10 @@ createRoot(document.getElementById("root")).render(
     <ThemeProvider attribute="class" enableSystem>
       <BrowserRouter basename="/E-commerce-books">
         {PUBLISHABLE_KEY ? (
-          <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <ClerkProvider 
+            publishableKey={PUBLISHABLE_KEY} 
+            afterSignOutUrl="/"
+          >
             <App />
           </ClerkProvider>
         ) : (
