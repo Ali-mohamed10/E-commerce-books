@@ -12,33 +12,34 @@ export default function FavoriteButton({ uniqueId }) {
   const { data, setData } = useContext(NytContext);
   const toast = useContext(ToastContext);
 
-  /**
-   * Toggle favorite status for the book with matching uniqueId
-   */
-  const handleFavorite = () => {
-    if (!data) return;
-
+  // --- 🔹 Toggle Favorite ---
+  const toggleFavorite = (uniqueId) => {
     setData((prevData) => {
       if (!prevData) return prevData;
 
-      return prevData.map((list) => ({
+      const updated = prevData.map((list) => ({
         ...list,
-        books: list.books.map((book) => 
-          book.uniqueId === uniqueId 
+        books: list.books.map((book) =>
+          book.uniqueId === uniqueId
             ? { ...book, isFavorite: !book.isFavorite }
             : book
         ),
       }));
+
+      localStorage.setItem("nytData", JSON.stringify(updated)); // persist
+      return updated;
     });
   };
 
   // Find the book by uniqueId across all lists
-  const book = data?.flatMap((list) => list.books).find((b) => b.uniqueId === uniqueId);
+  const book = data
+    ?.flatMap((list) => list.books)
+    .find((b) => b.uniqueId === uniqueId);
   const isFavorite = book?.isFavorite;
   return (
     <button
       onClick={() => {
-        handleFavorite();
+        toggleFavorite(uniqueId);
         toast.showToast(
           `${isFavorite ? "Removed From Favorites" : "Added To Favorite"}`
         );

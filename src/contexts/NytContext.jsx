@@ -6,21 +6,23 @@ export const NytContext = createContext({});
 
 export default function NytProvider({ children }) {
   const [data, setData] = useState(null);
-  const [firstBooks, setFirstBooks] = useState([]);
+  const [booksRanks, setBooksRanks] = useState([]);
 
   const normalizeLists = (lists) => {
     if (!Array.isArray(lists)) return null;
+
     return lists.map((list) => ({
       ...list,
       books: (list.books || []).map((book) => ({
         ...book,
-        // Add composite unique ID for books that appear in multiple lists
-        uniqueId: `${list.list_name_encoded || list.list_name}-${book.primary_isbn13}`,
+        uniqueId: `${list.list_name_encoded || list.list_name}-${
+          book.primary_isbn13
+        }`,
         listNameEncoded: list.list_name_encoded || list.list_name,
-        // Ensure global defaults accessible across components
-        isFavorite: Boolean(book.isFavorite),
-        isToCart: Boolean(book.isToCart),
-        price: 20,
+        isFavorite:
+          typeof book.isFavorite === "boolean" ? book.isFavorite : false,
+        isToCart: typeof book.isToCart === "boolean" ? book.isToCart : false,
+        price: typeof book.price === "number" ? book.price : 20,
         quantity:
           typeof book.quantity === "number" && book.quantity > 0
             ? book.quantity
@@ -29,71 +31,53 @@ export default function NytProvider({ children }) {
     }));
   };
 
-  // Initialize from localStorage if available
-  const fetchFirstBooks = () => {
-    try {
-      const stored = localStorage.getItem("nytData");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed) {
-          const normalized = normalizeLists(parsed);
-          if (normalized) setData(normalized);
-          return; // Skip initial fetch if we have stored data
-        }
-      }
-    } catch (e) {
-      // If parsing fails, continue to fetch
-      console.error("Failed to parse stored data:", e);
-    }
-
-    let isMounted = true;
+  const fetchBooks = () => {
     axios
       .get(
         "https://api.nytimes.com/svc/books/v3/lists/overview.json?api-key=lG9zL03N1ibBrR55GgSg52I3CQ4011wx"
       )
       .then((response) => {
-        if (isMounted) {
-          const normalized = normalizeLists(response.data.results.lists);
-          setData(normalized);
-          const firstBooksArray = normalized.map((list) => list.books[0]);
-          setFirstBooks((prevBooks) => {
-            const isDifferent =
-              prevBooks.length !== firstBooksArray.length ||
-              prevBooks.some(
-                (book, i) =>
-                  book.primary_isbn13 !== firstBooksArray[i].primary_isbn13
-              );
+        const normalized = normalizeLists(response.data.results.lists);
+        if (!normalized) return;
 
-            return isDifferent ? firstBooksArray : prevBooks;
-          });
+        const newRanks = normalized.map((list) =>
+          list.books.map((book) => book.rank)
+        );
+
+        const isDifferent =
+          booksRanks.length !== newRanks.length ||
+          booksRanks.some(
+            (listRanks, i) =>
+              listRanks.length !== newRanks[i].length ||
+              listRanks.some((rank, j) => rank !== newRanks[i][j])
+          );
+
+        if (isDifferent) {
+          setBooksRanks(newRanks);
+          setData(normalized);
         }
       })
       .catch((error) => {
-        if (isMounted) setData(null);
         console.error("Error fetching data:", error);
       });
-    return () => {
-      isMounted = false;
-    };
   };
-  // استدعاء أول مرة + تكرار كل 60 ثانية
-  useEffect(() => {
-    fetchFirstBooks();
-    const interval = setInterval(fetchFirstBooks, 60000); // كل دقيقة
 
-    return () => clearInterval(interval);
-  }, [firstBooks]);
-
-  // Persist to localStorage on changes
   useEffect(() => {
-    try {
-      if (data !== null) {
-        localStorage.setItem("nytData", JSON.stringify(data));
+    // Load from localStorage first
+    const stored = localStorage.getItem("nytData");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setData(parsed);
+      } catch {
+        console.error("Error parsing localStorage data");
       }
-    } catch (e) {
-      console.error("Failed to persist data:", e);
     }
-  }, [data]);
+
+    fetchBooks();
+    const interval = setInterval(fetchBooks, 60000);
+    return () => clearInterval(interval);
+  }, [booksRanks]);
 
   return (
     <NytContext.Provider value={{ data, setData }}>

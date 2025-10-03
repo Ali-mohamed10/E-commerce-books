@@ -13,7 +13,7 @@ const signOutUrl = `${basePath}/`;
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider attribute="class" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <BrowserRouter basename="/E-commerce-books">
         {PUBLISHABLE_KEY ? (
           <ClerkProvider 

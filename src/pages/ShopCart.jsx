@@ -34,7 +34,8 @@ export default function ShopCart() {
 
   // Calculate total price
   const totalPrice = cartBooks.reduce(
-    (sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+    (sum, item) =>
+      sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
     0
   );
 
@@ -43,11 +44,16 @@ export default function ShopCart() {
    */
   const handleProceedToBuy = () => {
     const cartDetails = cartBooks
-      .map((book) => `📚 ${book.title} - ${book.author} - Qty: ${book.quantity} - $${book.price}`)
+      .map(
+        (book) =>
+          `📚 ${book.title} - ${book.author} - Qty: ${book.quantity} - $${book.price}`
+      )
       .join("\n");
 
     const message = `🛒 Order Details:\n\n${cartDetails}\n\n💰 Total: $${totalPrice}\n\nHello! I would like to purchase these books.`;
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      message
+    )}`;
 
     window.open(whatsappUrl, "_blank");
   };
@@ -62,13 +68,16 @@ export default function ShopCart() {
     setData((prevData) => {
       if (!prevData) return prevData;
 
-      return prevData.map((list) => ({
+      const updated = prevData.map((list) => ({
         ...list,
         books: list.books.map((book) => {
           if (book.uniqueId !== uniqueId) return book;
           return { ...book, quantity: (book.quantity ?? 1) + 1 };
         }),
       }));
+
+      localStorage.setItem("nytData", JSON.stringify(updated));
+      return updated;
     });
   };
 
@@ -82,7 +91,7 @@ export default function ShopCart() {
     setData((prevData) => {
       if (!prevData) return prevData;
 
-      return prevData.map((list) => ({
+      const updated = prevData.map((list) => ({
         ...list,
         books: list.books.map((book) => {
           if (book.uniqueId !== uniqueId) return book;
@@ -90,6 +99,9 @@ export default function ShopCart() {
           return { ...book, quantity: newQuantity };
         }),
       }));
+
+      localStorage.setItem("nytData", JSON.stringify(updated));
+      return updated;
     });
   };
 

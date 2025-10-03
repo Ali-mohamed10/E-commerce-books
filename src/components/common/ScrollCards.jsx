@@ -20,13 +20,13 @@ export default function ScrollCards({ children }) {
       {/* Buttons */}
       <button
         onClick={() => scroll("prev")}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white"
+        className="absolute hidden md:block left-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white"
       >
         <ArrowBackIosNewIcon />
       </button>
       <button
         onClick={() => scroll("next")}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white"
+        className="absolute hidden md:block right-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white"
       >
         <ArrowForwardIosIcon />
       </button>
@@ -37,7 +37,7 @@ export default function ScrollCards({ children }) {
         className="
           grid grid-flow-col auto-cols-max
           grid-rows-1
-          gap-4 overflow-x-auto no-scrollbar scroll-smooth
+          md:gap-4 overflow-x-auto no-scrollbar scroll-smooth
           snap-x snap-mandatory p-4 overflow-y-hidden
         "
       >

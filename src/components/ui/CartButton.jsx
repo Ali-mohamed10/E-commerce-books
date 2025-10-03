@@ -13,16 +13,11 @@ export default function CartButton({ uniqueId }) {
   const { data, setData } = useContext(NytContext);
   const toast = useContext(ToastContext);
 
-  /**
-   * Toggle cart status for the book with matching uniqueId
-   */
-  const handleAddToCart = () => {
-    if (!data) return;
-
+  // --- 🔹 Toggle Cart ---
+  const toggleCart = (uniqueId) => {
     setData((prevData) => {
       if (!prevData) return prevData;
-
-      return prevData.map((list) => ({
+      const updated = prevData.map((list) => ({
         ...list,
         books: list.books.map((book) =>
           book.uniqueId === uniqueId
@@ -30,17 +25,21 @@ export default function CartButton({ uniqueId }) {
             : book
         ),
       }));
+      localStorage.setItem("nytData", JSON.stringify(updated)); // persist
+      return updated;
     });
   };
 
   // Find the book by uniqueId across all lists
-  const book = data?.flatMap((list) => list.books).find((b) => b.uniqueId === uniqueId);
+  const book = data
+    ?.flatMap((list) => list.books)
+    .find((b) => b.uniqueId === uniqueId);
   const isToCart = book?.isToCart;
   return (
     <button
       className="flex items-center gap-2 justify-center text-sm md:text-base font-bold border-1 border-white bg-main/70 hover:bg-main hover:shadow-white shadow-xl mt-4 w-fit text-white py-1 px-4 rounded-xl transition duration-300 cursor-pointer"
       onClick={() => {
-        handleAddToCart();
+        toggleCart(uniqueId);
         toast.showToast(`${isToCart ? "Removed From Cart" : "Added To Cart"}`);
         toast.background(`${isToCart ? "red" : ""}`);
       }}
