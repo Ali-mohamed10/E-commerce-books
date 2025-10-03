@@ -5,6 +5,7 @@ import firstCover from "../../assets/imgs/3D book-1.png";
 import secondCover from "../../assets/imgs/3D book-2.png";
 import { TextAnimate } from "../magicui/text-animate";
 import { SparklesText } from "../magicui/sparkles-text";
+import { Link } from "react-router-dom";
 
 function LandingPage() {
   return (
@@ -40,15 +41,17 @@ function LandingPage() {
             >
               Discover the latest bestsellers and timeless classics
             </TextAnimate>
-            <div className="flex justify-center mt-6">
-              <TextAnimate
-                animation="blurInUp"
-                by="word"
-                className="bg-button-border hover:bg-main text-text hover:text-white dark:text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 font-bold text-sm border-2 border-button-border"
-              >
-                Shop Now
-              </TextAnimate>
-            </div>
+            <Link to="/categories">
+              <div className="flex justify-center mt-6">
+                <TextAnimate
+                  animation="blurInUp"
+                  by="word"
+                  className="bg-button-border hover:bg-main text-text hover:text-white dark:text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 font-bold text-sm border-2 border-button-border"
+                >
+                  Shop Now
+                </TextAnimate>
+              </div>
+            </Link>
           </div>
           <div className="img-box rounded-xl md:rounded-none w-full h-full md:h-auto text-white relative md:w-1/2 p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
             <img
