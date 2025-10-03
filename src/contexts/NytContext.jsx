@@ -54,7 +54,47 @@ export default function NytProvider({ children }) {
 
         if (isDifferent) {
           setBooksRanks(newRanks);
-          setData(normalized);
+          // Merge normalized data with previous state/localStorage to preserve isFavorite, isToCart, quantity
+          setData((prev) => {
+            const base = Array.isArray(prev) ? prev : (() => {
+              const storedStr = localStorage.getItem("nytData");
+              try {
+                return storedStr ? JSON.parse(storedStr) : null;
+              } catch {
+                return null;
+              }
+            })();
+
+            // Build a map from previous items for quick lookup by uniqueId
+            const prevMap = new Map();
+            if (Array.isArray(base)) {
+              base.forEach((list) => {
+                (list.books || []).forEach((b) => {
+                  prevMap.set(b.uniqueId, b);
+                });
+              });
+            }
+
+            const merged = normalized.map((list) => ({
+              ...list,
+              books: (list.books || []).map((book) => {
+                const old = prevMap.get(book.uniqueId);
+                if (!old) return book;
+                return {
+                  ...book,
+                  isFavorite: typeof old.isFavorite === "boolean" ? old.isFavorite : book.isFavorite,
+                  isToCart: typeof old.isToCart === "boolean" ? old.isToCart : book.isToCart,
+                  quantity:
+                    typeof old.quantity === "number" && old.quantity > 0
+                      ? old.quantity
+                      : book.quantity,
+                };
+              }),
+            }));
+
+            localStorage.setItem("nytData", JSON.stringify(merged));
+            return merged;
+          });
         }
       })
       .catch((error) => {
