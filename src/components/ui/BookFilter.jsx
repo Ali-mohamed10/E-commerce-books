@@ -1,19 +1,28 @@
 import React from "react";
-
 export default function BookFilter({
+  uniqueAuthors,
+  uniqueListNames,
+  filteredBooksCount,
+  totalBooksCount,
   searchTerm,
   setSearchTerm,
   authorFilter,
   setAuthorFilter,
   listNameFilter,
   setListNameFilter,
-  uniqueAuthors,
-  uniqueListNames,
-  filteredBooksCount,
-  totalBooksCount,
-  onFilterChange,
-  onClearFilters,
+  setCurrentPage,
 }) {
+
+  // Clear all filters
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setAuthorFilter("");
+    setListNameFilter("");
+    setCurrentPage(1);
+  };
+  const handleFilterChange = () => {
+    setCurrentPage(1);
+  };
   return (
     <div className="bg-white dark:bg-backgrounds rounded-lg shadow-lg p-6 mb-8">
       <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
@@ -36,7 +45,7 @@ export default function BookFilter({
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              onFilterChange();
+              setCurrentPage(1);
             }}
             className="w-full cursor-pointer px-4 py-2 border rounded-lg focus:ring-2 focus:ring-second focus:border-transparent dark:bg-gray-700"
           />
@@ -55,7 +64,7 @@ export default function BookFilter({
             value={authorFilter}
             onChange={(e) => {
               setAuthorFilter(e.target.value);
-              onFilterChange();
+              handleFilterChange();
             }}
             className="w-full cursor-pointer px-4 py-2 border rounded-lg focus:ring-2 focus:ring-second focus:border-transparent dark:bg-gray-700"
           >
@@ -81,7 +90,7 @@ export default function BookFilter({
             value={listNameFilter}
             onChange={(e) => {
               setListNameFilter(e.target.value);
-              onFilterChange();
+              handleFilterChange();
             }}
             className="w-full cursor-pointer px-4 py-2 border rounded-lg focus:ring-2 focus:ring-second focus:border-transparent dark:bg-gray-700"
           >
@@ -106,7 +115,7 @@ export default function BookFilter({
       {(searchTerm || authorFilter || listNameFilter) && (
         <div className="mt-4 text-center">
           <button
-            onClick={onClearFilters}
+            onClick={handleClearFilters}
             className="px-6 py-2 bg-main/60 hover:bg-main cursor-pointer text-white rounded-lg transition-colors duration-200"
           >
             Clear All Filters

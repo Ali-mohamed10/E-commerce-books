@@ -12,7 +12,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { cn } from "/lib/utils";
 
-export const wrap = (min, max, v) => {
+const wrap = (min, max, v) => {
   const rangeSize = max - min;
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
@@ -83,7 +83,8 @@ function ScrollVelocityRowImpl({
       const cw = container.offsetWidth || 0;
       const bw = block.scrollWidth || 0;
       unitWidth.set(bw);
-      const nextCopies = bw > 0 ? Math.max(3, Math.ceil(cw / bw) + 2) : 1;
+      // Use fewer copies to reduce DOM work (slight simplification)
+      const nextCopies = bw > 0 ? Math.max(2, Math.ceil(cw / bw) + 1) : 1;
       setNumCopies((prev) => (prev === nextCopies ? prev : nextCopies));
     };
 
@@ -129,21 +130,25 @@ function ScrollVelocityRowImpl({
 
   useAnimationFrame((_, delta) => {
     if (!isInViewRef.current || !isPageVisibleRef.current) return;
+    if (prefersReducedMotionRef.current) return; // fully respect reduced motion
     const dt = delta / 1000;
     const vf = velocityFactor.get();
-    const absVf = Math.min(5, Math.abs(vf));
-    const speedMultiplier = prefersReducedMotionRef.current ? 1 : 1 + absVf;
+    const absVf = Math.min(3, Math.abs(vf));
+    const speedMultiplier = 1 + absVf; // lighter multiplier
 
-    if (absVf > 0.1) {
+    if (absVf > 0.25) {
       const scrollDirection = vf >= 0 ? 1 : -1;
       currentDirectionRef.current = baseDirectionRef.current * scrollDirection;
     }
 
     const bw = unitWidth.get() || 0;
     if (bw <= 0) return;
-    const pixelsPerSecond = (bw * baseVelocity) / 100;
-    const moveBy =
-      currentDirectionRef.current * pixelsPerSecond * speedMultiplier * dt;
+    // Slow the base speed a bit to reduce GPU/CPU load
+    const mobileFactor = (typeof navigator !== 'undefined' && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ? 0.7 : 1;
+    const pixelsPerSecond = ((bw * baseVelocity) / 150) * mobileFactor;
+    const moveBy = currentDirectionRef.current * pixelsPerSecond * speedMultiplier * dt;
+    // Skip very tiny updates to avoid sub-pixel thrashing
+    if (Math.abs(moveBy) < 0.05) return;
     baseX.set(baseX.get() + moveBy);
   });
 

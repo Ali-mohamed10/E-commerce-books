@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from "react";
+import { useContext, useState, useMemo, useEffect } from "react";
 import { NytContext } from "../contexts/NytContext";
 import BookFilter from "../components/ui/BookFilter";
 import BooksGrid from "../components/ui/BooksGrid";
@@ -38,6 +38,11 @@ export default function Categories() {
     });
     return books;
   }, [data]);
+
+  // Reset to first page whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, authorFilter, listNameFilter]);
 
   // Create unique authors list
   const uniqueAuthors = useMemo(() => {
@@ -87,17 +92,6 @@ export default function Categories() {
   }, [filteredBooks, currentPage]);
 
   // Reset page when filters change
-  const handleFilterChange = () => {
-    setCurrentPage(1);
-  };
-
-  // Clear all filters
-  const handleClearFilters = () => {
-    setSearchTerm("");
-    setAuthorFilter("");
-    setListNameFilter("");
-    setCurrentPage(1);
-  };
 
   if (!data) {
     return (
@@ -124,22 +118,21 @@ export default function Categories() {
 
         {/* Filter Section */}
         <BookFilter
+          uniqueAuthors={uniqueAuthors}
+          uniqueListNames={uniqueListNames}
+          filteredBooksCount={filteredBooks.length}
+          totalBooksCount={allBooks.length}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           authorFilter={authorFilter}
           setAuthorFilter={setAuthorFilter}
           listNameFilter={listNameFilter}
           setListNameFilter={setListNameFilter}
-          uniqueAuthors={uniqueAuthors}
-          uniqueListNames={uniqueListNames}
-          filteredBooksCount={filteredBooks.length}
-          totalBooksCount={allBooks.length}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
+          setCurrentPage={setCurrentPage}
         />
 
         {/* Books Grid */}
-        <BooksGrid books={currentBooks} onClearFilters={handleClearFilters} />
+        <BooksGrid books={currentBooks} />
         {/* Pagination */}
         <Pagination
           currentPage={currentPage}
