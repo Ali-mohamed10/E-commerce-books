@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { NytContext } from "../contexts/NytContext";
 import Card from "../components/ui/Card";
 import { SparklesText } from "../components/magicui/sparkles-text";
@@ -13,12 +13,13 @@ export default function FavoriteBooks() {
   const { data } = useContext(NytContext);
 
   // Extract all favorite books from all lists
-  const favoriteBooks =
-    data?.flatMap((list) =>
-      list.books
-        .filter((book) => book.isFavorite)
-        .map((book) => ({
-          title: book.title,
+  const favoriteBooks = useMemo(
+    () =>
+      data?.flatMap((list) =>
+        list.books
+          .filter((book) => book.isFavorite)
+          .map((book) => ({
+            title: book.title,
           imgCover: book.book_image,
           author: book.author,
           price: book.price,
@@ -26,7 +27,9 @@ export default function FavoriteBooks() {
           uniqueId: book.uniqueId,
           isbn: book.primary_isbn13,
         }))
-    ) || [];
+    ) || [],
+    [data]
+  );
 
   return (
     <Section>

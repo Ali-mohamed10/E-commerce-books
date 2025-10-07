@@ -24,19 +24,14 @@ export default function Categories() {
   // Collect all books from all lists
   const allBooks = useMemo(() => {
     if (!data) return [];
-
-    const books = [];
-    data.forEach((list) => {
-      list.books.forEach((book) => {
-        books.push({
-          ...book,
-          listName: list.list_name,
-          uniqueId: book.uniqueId,
-          isbn: book.primary_isbn13,
-        });
-      });
-    });
-    return books;
+    return data.flatMap((list) =>
+      (list.books || []).map((book) => ({
+        ...book,
+        listName: list.list_name,
+        uniqueId: book.uniqueId,
+        isbn: book.primary_isbn13,
+      }))
+    );
   }, [data]);
 
   // Reset to first page whenever filters change
@@ -46,40 +41,23 @@ export default function Categories() {
 
   // Create unique authors list
   const uniqueAuthors = useMemo(() => {
-    const authors = new Set();
-    allBooks.forEach((book) => {
-      if (book.author) {
-        authors.add(book.author);
-      }
-    });
-    return Array.from(authors).sort();
+    return [...new Set(allBooks.map((b) => b.author).filter(Boolean))].sort();
   }, [allBooks]);
 
   // Create unique list names list
   const uniqueListNames = useMemo(() => {
-    const listNames = new Set();
-    data?.forEach((list) => {
-      if (list.list_name) {
-        listNames.add(list.list_name);
-      }
-    });
-    return Array.from(listNames).sort();
+    return [...new Set((data || []).map((l) => l.list_name).filter(Boolean))].sort();
   }, [data]);
 
   // Apply filters to books
   const filteredBooks = useMemo(() => {
-    return allBooks.filter((book) => {
-      const matchesSearch =
-        !searchTerm ||
-        book.title?.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesAuthor = !authorFilter || book.author === authorFilter;
-
-      const matchesListName =
-        !listNameFilter || book.listName === listNameFilter;
-
-      return matchesSearch && matchesAuthor && matchesListName;
-    });
+    const s = searchTerm.trim().toLowerCase();
+    return allBooks.filter(
+      (b) =>
+        (!s || b.title?.toLowerCase().includes(s)) &&
+        (!authorFilter || b.author === authorFilter) &&
+        (!listNameFilter || b.listName === listNameFilter)
+    );
   }, [allBooks, searchTerm, authorFilter, listNameFilter]);
 
   // Calculate total pages
@@ -105,10 +83,10 @@ export default function Categories() {
 
   return (
     <Section>
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-16">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4">
             All Books
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">

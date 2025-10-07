@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo, useCallback } from "react";
 import { useUser, SignInButton } from "@clerk/clerk-react";
 import { NytContext } from "../contexts/NytContext";
 import CartButton from "../components/ui/CartButton";
@@ -16,94 +16,90 @@ export default function ShopCart() {
   const { isSignedIn } = useUser();
 
   // Extract all books marked as "in cart" from all lists
-  const cartBooks =
-    data?.flatMap((list) =>
-      list.books
-        .filter((book) => book.isToCart)
-        .map((book) => ({
-          title: book.title,
-          imgCover: book.book_image,
-          author: book.author,
-          price: book.price,
-          listName: list.list_name,
-          uniqueId: book.uniqueId,
-          isbn: book.primary_isbn13,
-          quantity: book.quantity ?? 1,
-        }))
-    ) || [];
+  const cartBooks = useMemo(
+    () =>
+      data?.flatMap((list) =>
+        list.books
+          .filter((book) => book.isToCart)
+          .map((book) => ({
+            title: book.title,
+            imgCover: book.book_image,
+            author: book.author,
+            price: book.price,
+            listName: list.list_name,
+            uniqueId: book.uniqueId,
+            isbn: book.primary_isbn13,
+            quantity: book.quantity ?? 1,
+          }))
+      ) || [],
+    [data]
+  );
 
   // Calculate total price
-  const totalPrice = cartBooks.reduce(
-    (sum, item) =>
-      sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
-    0
+  const totalPrice = useMemo(
+    () =>
+      cartBooks.reduce(
+        (sum, item) =>
+          sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+        0
+      ),
+    [cartBooks]
   );
 
   /**
    * Generate WhatsApp message and open chat
    */
-  const handleProceedToBuy = () => {
-    const cartDetails = cartBooks
+  const whatsappText = useMemo(() => {
+    const lines = cartBooks
       .map(
-        (book) =>
-          `📚 ${book.title} - ${book.author} - Qty: ${book.quantity} - $${book.price}`
+        (b) => `📚 ${b.title} - ${b.author} - Qty: ${b.quantity} - $${b.price}`
       )
       .join("\n");
+    return `🛒 Order Details:\n\n${lines}\n\n💰 Total: $${totalPrice.toFixed(
+      2
+    )}\n\nHello! I would like to purchase these books.`;
+  }, [cartBooks, totalPrice]);
 
-    const message = `🛒 Order Details:\n\n${cartDetails}\n\n💰 Total: $${totalPrice}\n\nHello! I would like to purchase these books.`;
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      message
-    )}`;
+  const whatsappUrl = useMemo(
+    () =>
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappText)}`,
+    [whatsappText]
+  );
 
+  const handleProceedToBuy = useCallback(() => {
     window.open(whatsappUrl, "_blank");
-  };
+  }, [whatsappUrl]);
 
   /**
    * Increase quantity for a specific book in cart
    * @param {string} uniqueId - Book's unique identifier
    */
-  const increaseQuantity = (uniqueId) => {
-    if (!data) return;
+  const updateQuantity = useCallback(
+    (uniqueId, delta) => {
+      if (!data) return;
+      setData((prev) => {
+        if (!prev) return prev;
+        const updated = prev.map((list) => ({
+          ...list,
+          books: list.books.map((book) => {
+            if (book.uniqueId !== uniqueId) return book;
+            const next = Math.max(1, (book.quantity ?? 1) + delta);
+            return { ...book, quantity: next };
+          }),
+        }));
+        localStorage.setItem("nytData", JSON.stringify(updated));
+        return updated;
+      });
+    },
+    [data, setData]
+  );
 
-    setData((prevData) => {
-      if (!prevData) return prevData;
-
-      const updated = prevData.map((list) => ({
-        ...list,
-        books: list.books.map((book) => {
-          if (book.uniqueId !== uniqueId) return book;
-          return { ...book, quantity: (book.quantity ?? 1) + 1 };
-        }),
-      }));
-
-      localStorage.setItem("nytData", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
-  /**
-   * Decrease quantity for a specific book in cart (minimum 1)
-   * @param {string} uniqueId - Book's unique identifier
-   */
-  const decreaseQuantity = (uniqueId) => {
-    if (!data) return;
-
-    setData((prevData) => {
-      if (!prevData) return prevData;
-
-      const updated = prevData.map((list) => ({
-        ...list,
-        books: list.books.map((book) => {
-          if (book.uniqueId !== uniqueId) return book;
-          const newQuantity = Math.max(1, (book.quantity ?? 1) - 1);
-          return { ...book, quantity: newQuantity };
-        }),
-      }));
-
-      localStorage.setItem("nytData", JSON.stringify(updated));
-      return updated;
-    });
-  };
+  const increaseQuantity = useCallback((id) => updateQuantity(id, +1), [
+    updateQuantity,
+  ]);
+  const decreaseQuantity = useCallback((id) => updateQuantity(id, -1), [
+    updateQuantity,
+  ]);
 
   return (
     <Section>
@@ -111,8 +107,8 @@ export default function ShopCart() {
         <h2 className="text-2xl md:text-3xl mb-2 font-bold">Shop Cart :</h2>
         {cartBooks.length !== 0 ? (
           cartBooks.map((cart) => (
-            <Section>
-              <div key={cart.uniqueId}>
+            <Section key={cart.uniqueId}>
+              <div>
                 <div className="flex flex-wrap gap-5 mt-5 items-center">
                   <div>
                     <img

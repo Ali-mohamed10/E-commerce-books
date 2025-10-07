@@ -50,6 +50,7 @@ A modern, feature-rich e-commerce platform for browsing and purchasing books fro
 - **React Context API** - Global state management for books, favorites, and cart
 - **Axios** - HTTP client for API requests
 - **localStorage** - Client-side data persistence
+- **React Hook Form** - Forms and validation with minimal re-renders
 
 ### Authentication & Security
 - **Clerk** - Complete user authentication solution

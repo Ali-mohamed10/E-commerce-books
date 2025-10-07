@@ -1,8 +1,8 @@
 import { memo } from "react";
-import logo from "../../assets/imgs/icons8-book-96.png";
+import logo from "../../assets/imgs/icons8-book-96.webp";
 import Gradient from "../ui/Gradient";
-import firstCover from "../../assets/imgs/3D book-1.png";
-import secondCover from "../../assets/imgs/3D book-2.png";
+import firstCover from "../../assets/imgs/3D book-1.webp";
+import secondCover from "../../assets/imgs/3D book-2.webp";
 import { TextAnimate } from "../magicui/text-animate";
 import { SparklesText } from "../magicui/sparkles-text";
 import { Link } from "react-router-dom";

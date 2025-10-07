@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { NytContext } from "../contexts/NytContext";
 import CartButton from "../components/ui/CartButton";
 import FavoriteButton from "../components/ui/FavoriteButton";
@@ -14,6 +14,18 @@ export default function BookDetails() {
   const { data } = useContext(NytContext);
   const { isbn } = useParams();
 
+  // Find book by ISBN across all lists
+  const { book, list } = useMemo(() => {
+    if (!data) return { book: null, list: null };
+    for (const currentList of data) {
+      const foundBook = currentList.books.find((b) => b.primary_isbn13 === isbn);
+      if (foundBook) {
+        return { book: foundBook, list: currentList };
+      }
+    }
+    return { book: null, list: null };
+  }, [data, isbn]);
+
   // Loading state
   if (!data) {
     return (
@@ -21,19 +33,6 @@ export default function BookDetails() {
         Loading...
       </div>
     );
-  }
-
-  // Find book by ISBN across all lists
-  let book = null;
-  let list = null;
-
-  for (const currentList of data) {
-    const foundBook = currentList.books.find((b) => b.primary_isbn13 === isbn);
-    if (foundBook) {
-      book = foundBook;
-      list = currentList;
-      break;
-    }
   }
 
   // Not found state

@@ -1,4 +1,4 @@
-import logo from "../../assets/imgs/icons8-book-96.png";
+import logo from "../../assets/imgs/icons8-book-96.webp";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useContext } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";

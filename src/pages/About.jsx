@@ -2,7 +2,7 @@ import { SparklesText } from "../components/magicui/sparkles-text";
 import Section from "../components/ui/AnimationSection";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
-import book1 from "../assets/imgs/3D book-1.png";
+import book1 from "../assets/imgs/3D book-1.webp";
 
 export default function About() {
   const missionPoints = [
@@ -37,10 +37,10 @@ export default function About() {
       <section className="relative w-full">
         {/* Hero */}
         <div className="container mx-auto px-4 pt-16 pb-8 text-center">
-          <SparklesText className="text-3xl md:text-6xl text-text">
+          <SparklesText className="text-3xl md:text-5xl font-semibold">
             About NYT Books
           </SparklesText>
-          <p className="mx-auto mt-4 max-w-2xl text-base md:text-lg text-muted-foreground">
+          <p className="mx-auto mt-4 text-sm text-muted-foreground">
             Discover, track, and fall in love with the world’s most talked-about
             books. We bring The New York Times Best Sellers lists to your
             fingertips—beautifully, simply, and fast.

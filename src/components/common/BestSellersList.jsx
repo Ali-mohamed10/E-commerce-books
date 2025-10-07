@@ -3,8 +3,8 @@ import Card from "../ui/Card";
 import { NytContext } from "../../contexts/NytContext";
 import { useContext } from "react";
 import { TextAnimate } from "../magicui/text-animate";
-import Offer from "../../assets/imgs/Offer.png";
-import BestSeller from "../../assets/imgs/BestSeller.png";
+import Offer from "../../assets/imgs/Offer.webp";
+import BestSeller from "../../assets/imgs/BestSeller.webp";
 
 /**
  * BestSellersList Component
@@ -25,7 +25,7 @@ export default function BestSellersList() {
             Best Sellers Lists
           </TextAnimate>
         </h2>
-        <div className="flex flex-col md:flex-row items-center justify-center rounded-2xl border-2 shadow-xl dark:shadow-button-border mb-10">
+        <div className="flex flex-col md:flex-row items-center justify-center rounded-2xl border-2 shadow-xl dark:shadow-button-border mb-10 py-10">
           <div className="imgs my-5 w-[40%] md:w-[19%] mx-auto bg-whites rounded-2xl bg-gradient-to-b from-whites via-main/20 to-whites flex-col justify-center items-center">
             <img src={BestSeller} alt="Best Seller" loading="lazy" />
             <img
