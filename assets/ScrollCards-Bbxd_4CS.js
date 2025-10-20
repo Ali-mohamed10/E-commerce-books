@@ -1,0 +1,6 @@
+import{c as e,j as o,r as l}from"./index-BX3qq4Dx.js";const a=e(o.jsx("path",{d:"M6.23 20.23 8 22l10-10L8 2 6.23 3.77 14.46 12z"})),d=e(o.jsx("path",{d:"M17.77 3.77 16 2 6 12l10 10 1.77-1.77L9.54 12z"}));function m({children:s}){const r=l.useRef(null),t=n=>{r.current&&r.current.scrollBy({left:n==="next"?250:-250,behavior:"smooth"})};return o.jsxs("div",{className:"relative w-full md:w-3/4 overflow-hidden px-0 md:px-4 rounded-2xl shadow-sm dark:shadow-button-border mx-auto",children:[o.jsx("button",{onClick:()=>t("prev"),className:"absolute hidden md:block left-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white",children:o.jsx(d,{})}),o.jsx("button",{onClick:()=>t("next"),className:"absolute hidden md:block right-2 top-1/2 -translate-y-1/2 bg-main/60 hover:bg-main hover:scale-105 transition duration-300 text-white p-1.5 md:p-3 rounded-full z-10 border-2 border-white",children:o.jsx(a,{})}),o.jsx("div",{ref:r,className:`\r
+          grid grid-flow-col auto-cols-max\r
+          grid-rows-1\r
+          md:gap-4 overflow-x-auto no-scrollbar scroll-smooth\r
+          snap-x snap-mandatory p-4 overflow-y-hidden\r
+        `,children:s})]})}export{m as S};
