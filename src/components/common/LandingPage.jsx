@@ -1,70 +1,49 @@
-import { memo } from "react";
-import logo from "../../assets/imgs/icons8-book-96.webp";
-import Gradient from "../ui/Gradient";
-import firstCover from "../../assets/imgs/3D book-1.webp";
-import secondCover from "../../assets/imgs/3D book-2.webp";
-import { TextAnimate } from "../magicui/text-animate";
-import { SparklesText } from "../magicui/sparkles-text";
-import { Link } from "react-router-dom";
-
-function LandingPage() {
+import img from "../../assets/imgs/senior-woman.webp";
+import ButtonToCategories from "../ui/ButtonToCategories";
+export default function LandingPage() {
   return (
-    <div className="landing-page container m-auto h-screen relative">
-      <Gradient className="h-4/5 flex justify-center mt-2 rounded-xl overflow-hidden">
-        <img
-          src={firstCover}
-          alt="first cover"
-          loading="lazy"
-          className="book1 absolute top-1/2 -left-4/5 -translate-y-1/2 animate-fade-in-up delay-200 will-change-transform"
-        />
-        <img
-          src={secondCover}
-          alt="second cover"
-          loading="lazy"
-          className="book2 absolute top-1/2 -translate-y-1/2 -right-4/5 animate-fade-in-up delay-400 will-change-transform"
-        />
-        <div className="flex flex-col md:flex-row h-full md:h-auto">
-          <div className="info rounded-xl md:rounded-none w-full text-text relative md:w-1/2 p-8 bg-backgrounds flex flex-col justify-center border-2 border-button-border md:-skew-y-10 md:translate-y-15">
-            <SparklesText className="flex justify-center">
-              <TextAnimate
-                animation="blurInUp"
-                by="word"
-                className={`text-2xl font-bold text-center mt-8`}
-              >
-                Welcome to NYT Books
-              </TextAnimate>
-            </SparklesText>
-            <TextAnimate
-              animation="blurInUp"
-              by="word"
-              className="text-center text-md mt-4"
-            >
-              Discover the latest bestsellers and timeless classics
-            </TextAnimate>
-            <Link to="/categories">
-              <div className="flex justify-center mt-6">
-                <TextAnimate
-                  animation="blurInUp"
-                  by="word"
-                  className="bg-button-border hover:bg-main text-text hover:text-white dark:text-white cursor-pointer px-4 py-2 rounded-md transition duration-300 font-bold text-sm border-2 border-button-border"
-                >
-                  Shop Now
-                </TextAnimate>
-              </div>
-            </Link>
-          </div>
-          <div className="img-box rounded-xl md:rounded-none w-full h-full md:h-auto text-white relative md:w-1/2 p-8 bg-backgrounds flex justify-center items-center border-2 border-button-border md:skew-y-10 md:translate-y-15">
-            <img
-              src={logo}
-              alt="Books"
-              loading="lazy"
-              className="mx-auto w-1/3 md:w-1/2 animate-fade-in-up"
-            />
-          </div>
+    <section className="landing-page min-h-screen bg-backgrounds mb-10 px-4">
+      <div className="info relative px-2.5 py-9 sm:py-5 flex flex-wrap items-center justify-center gap-3 sm:gap-10">
+        <h2 className="relative text-5xl sm:text-5xl lg:text-9xl font-bold text-main italic whitespace-nowrap">
+          NYT <span className="sm:hidden text-white"> Books</span>
+        </h2>
+        <div className="image translate-y-5">
+          <img
+            src={img}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            alt="senior-woman"
+            className="sm:flex w-[100%] h-50 sm:w-[100%] sm:h-90 rounded-2xl shadow-2xl dark:shadow-button-border"
+          />
         </div>
-      </Gradient>
-    </div>
+        <h2 className="hidden sm:flex text-5xl sm:text-5xl lg:text-9xl font-bold italic">
+          Books
+        </h2>
+        <p className="hidden sm:flex text-2xl lg:text-3xl italic translate-x-0 sm:translate-x-60 translate-y-25 sm:translate-y-15 lg:translate-y-25 absolute pr-4">
+          Shop Now - <span className="text-main px-2">$20 </span> Only
+        </p>
+      </div>
+      <div className="details flex flex-wrap gap-6 px-2.5 py-5 justify-center items-center mt-0 sm:mt-5">
+        <p className="italic w-100 text-sm text-gray-500 text-center sm:text-start">
+          Discover a world of captivating stories and knowledge with our curated
+          selection of New York Times bestselling books. From thrilling novels
+          to insightful non-fiction, find your next great read today!
+        </p>
+        <div className="buttons flex flex-wrap gap-4 justify-center">
+          <ButtonToCategories
+            classes="cursor-pointer rounded-md py-2 px-6 bg-black dark:bg-white border-2 border-black text-white dark:text-black font-bold transition-all duration-300 hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transform hover:scale-105"
+            label="Shop Now - $20 Only"
+          />
+          <ButtonToCategories
+            classes="cursor-pointer rounded-md py-2 px-6 border-2 border-black dark:border-white transition-all duration-300 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transform hover:scale-105"
+            label="Browse Collection"
+          />
+        </div>
+        <p className="hidden sm:flex italic text-center sm:text-start text-gray-500">
+          © 2025 NYT. All rights reserved. Designed with ♥ by NYT Books
+        </p>
+      </div>
+    </section>
   );
 }
-
-export default memo(LandingPage);

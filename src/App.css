@@ -46,7 +46,7 @@ button {
   animation-delay: 500ms;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .info::after {
     content: "";
     position: absolute;
@@ -69,7 +69,7 @@ button {
     border: 2px solid #eeeeee85;
     border-left-width: 4px;
   }
-}
+} */
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -81,4 +81,3 @@ button {
 }
 
 /* End Landing Page */
-

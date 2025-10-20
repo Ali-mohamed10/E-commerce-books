@@ -43,7 +43,7 @@ export default function Nav() {
     : 0;
   return (
     <header>
-      <nav className="container mx-auto bg-backgrounds relative px-4 py-2 text-text flex flex-wrap gap-y-3.5 items-center justify-between shadow-xl dark:shadow-button-border rounded-md">
+      <nav className="bg-backgrounds relative px-4 md:px-10 py-2 text-text flex flex-wrap gap-y-3.5 items-center justify-between shadow-xl dark:shadow-button-border rounded-md">
         <div className="flex items-center">
           <img
             src={logo}
