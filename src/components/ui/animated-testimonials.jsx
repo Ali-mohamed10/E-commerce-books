@@ -6,6 +6,14 @@ import { useEffect, useState } from "react";
 
 export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
   const [active, setActive] = useState(0);
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(!!mql.matches);
+    update();
+    mql.addEventListener?.("change", update);
+    return () => mql.removeEventListener?.("change", update);
+  }, []);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -20,11 +28,12 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
   };
 
   useEffect(() => {
-    if (autoplay) {
-      const interval = setInterval(handleNext, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [autoplay]);
+    if (!autoplay) return;
+    const interval = setInterval(() => {
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [autoplay, testimonials.length]);
 
   const randomRotateY = () => {
     return Math.floor(Math.random() * 21) - 10;
@@ -53,29 +62,29 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
                 <motion.div
                   key={testimonial.src}
                   initial={{
-                    opacity: 0,
-                    scale: 0.9,
-                    z: -100,
-                    rotate: randomRotateY(),
+                    opacity: reduced ? 1 : 0,
+                    scale: reduced ? 1 : 0.98,
+                    z: reduced ? 0 : -80,
+                    rotate: reduced ? 0 : randomRotateY(),
                   }}
                   animate={{
-                    opacity: isActive(index) ? 1 : 0.7,
-                    scale: isActive(index) ? 1 : 0.95,
-                    z: isActive(index) ? 0 : -100,
-                    rotate: isActive(index) ? 0 : randomRotateY(),
+                    opacity: isActive(index) ? 1 : (reduced ? 1 : 0.75),
+                    scale: isActive(index) ? 1 : (reduced ? 1 : 0.97),
+                    z: isActive(index) ? 0 : (reduced ? 0 : -80),
+                    rotate: isActive(index) ? 0 : (reduced ? 0 : randomRotateY()),
                     zIndex: isActive(index)
                       ? 40
                       : testimonials.length + 2 - index,
-                    y: isActive(index) ? [0, -80, 0] : 0,
+                    y: reduced ? 0 : (isActive(index) ? [0, -60, 0] : 0),
                   }}
                   exit={{
-                    opacity: 0,
-                    scale: 0.9,
-                    z: 100,
-                    rotate: randomRotateY(),
+                    opacity: reduced ? 1 : 0,
+                    scale: reduced ? 1 : 0.98,
+                    z: reduced ? 0 : 80,
+                    rotate: reduced ? 0 : randomRotateY(),
                   }}
                   transition={{
-                    duration: 0.4,
+                    duration: reduced ? 0.001 : 0.25,
                     ease: "easeInOut",
                   }}
                   className="absolute inset-0 origin-bottom"
@@ -102,19 +111,19 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
           <motion.div
             key={active}
             initial={{
-              y: 20,
-              opacity: 0,
+              y: reduced ? 0 : 16,
+              opacity: reduced ? 1 : 0,
             }}
             animate={{
               y: 0,
               opacity: 1,
             }}
             exit={{
-              y: -20,
-              opacity: 0,
+              y: reduced ? 0 : -12,
+              opacity: reduced ? 1 : 0,
             }}
             transition={{
-              duration: 0.2,
+              duration: reduced ? 0.001 : 0.18,
               ease: "easeInOut",
             }}
           >
@@ -129,9 +138,9 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
                 <motion.span
                   key={index}
                   initial={{
-                    filter: "blur(10px)",
-                    opacity: 0,
-                    y: 5,
+                    filter: reduced ? "blur(0px)" : "blur(10px)",
+                    opacity: reduced ? 1 : 0,
+                    y: reduced ? 0 : 5,
                   }}
                   animate={{
                     filter: "blur(0px)",
@@ -139,9 +148,9 @@ export const AnimatedTestimonials = ({ testimonials, autoplay = false }) => {
                     y: 0,
                   }}
                   transition={{
-                    duration: 0.2,
+                    duration: reduced ? 0.001 : 0.16,
                     ease: "easeInOut",
-                    delay: 0.02 * index,
+                    delay: reduced ? 0 : 0.015 * index,
                   }}
                   className="inline-block"
                 >

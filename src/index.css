@@ -156,6 +156,15 @@
   }
 }
 
+/* Respect reduced motion to improve performance on low-power devices */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Utility to hide scrollbars cross-browser */
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */

@@ -1,61 +1,78 @@
 import { AnimatedTestimonials } from "../ui/animated-testimonials";
-import LightRays from "../LightRays/LightRays";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { TextAnimate } from "../magicui/text-animate";
+import photo1 from "../../assets/imgs/photo1.webp";
+import photo2 from "../../assets/imgs/photo2.webp";
+import photo3 from "../../assets/imgs/photo3.webp";
+import photo4 from "../../assets/imgs/photo4.webp";
+import photo5 from "../../assets/imgs/photo5.webp";
+
+const LightRays = lazy(() => import("../LightRays/LightRays"));
 
 export default function Testimonials() {
+  const [enableFX, setEnableFX] = useState(false);
+  useEffect(() => {
+    const noReduce = typeof window !== "undefined" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isDesktop = typeof window !== "undefined" && window.matchMedia("(min-width: 640px)").matches;
+    setEnableFX(noReduce && isDesktop);
+  }, []);
   const testimonials = [
     {
       quote:
         "The attention to detail and innovative features have completely transformed our workflow. This is exactly what we've been looking for.",
       name: "Sarah Chen",
       designation: "Product Manager at TechFlow",
-      src: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: photo1,
     },
     {
       quote:
         "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
       name: "Michael Rodriguez",
       designation: "CTO at InnovateSphere",
-      src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: photo2,
     },
     {
       quote:
         "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
       name: "Emily Watson",
       designation: "Operations Director at CloudScale",
-      src: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: photo3,
     },
     {
       quote:
         "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
       name: "James Kim",
       designation: "Engineering Lead at DataPro",
-      src: "https://images.unsplash.com/photo-1636041293178-808a6762ab39?q=80&w=3464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: photo4,
     },
     {
       quote:
         "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
       name: "Lisa Thompson",
       designation: "VP of Technology at FutureNet",
-      src: "https://images.unsplash.com/photo-1624561172888-ac93c696e10c?q=80&w=2592&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      src: photo5,
     },
   ];
   return (
     <div className="relative py-16 bg-gradient-to-br from-button-border/30 via-button-border/30 to-whites sm:bg-none">
-      <div className="absolute inset-0 -z-10">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#ddd"
-          raysSpeed={1.5}
-          lightSpread={0.8}
-          rayLength={1.2}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
-          className="w-full h-full hidden sm:block"
-        />
-      </div>
+      {enableFX && (
+        <div className="absolute inset-0 -z-10">
+          <Suspense fallback={null}>
+            <LightRays
+              raysOrigin="top-center"
+              raysColor="#ddd"
+              raysSpeed={1.5}
+              lightSpread={0.8}
+              rayLength={1.2}
+              followMouse={true}
+              mouseInfluence={0.1}
+              noiseAmount={0.1}
+              distortion={0.05}
+              className="w-full h-full hidden sm:block"
+            />
+          </Suspense>
+        </div>
+      )}
       <h2>
         <TextAnimate
           animation="blurInUp"

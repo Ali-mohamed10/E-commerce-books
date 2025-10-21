@@ -14,7 +14,7 @@ export default function BestSellersList() {
   const { data } = useContext(NytContext);
 
   return (
-    <div className="best-sellers relative">
+    <div className="best-sellers relative pt-10">
       <h2>
         <TextAnimate
           animation="blurInUp"
@@ -26,11 +26,21 @@ export default function BestSellersList() {
       </h2>
       <div className="flex flex-col md:flex-row items-center justify-center rounded-2xl border-2 shadow-xl dark:shadow-button-border mb-10 py-10">
         <div className="imgs my-5 w-[40%] md:w-[19%] mx-auto bg-whites rounded-2xl bg-gradient-to-b from-whites via-main/20 to-whites flex-col justify-center items-center">
-          <img src={BestSeller} alt="Best Seller" loading="lazy" />
+          <img
+            src={BestSeller}
+            alt="Best Seller"
+            loading="lazy"
+            width={900}
+            height={600}
+            sizes="(min-width: 1024px) 350px, (min-width: 640px) 260px, 40vw"
+          />
           <img
             src={Offer}
             alt="Offer"
             loading="lazy"
+            width={600}
+            height={800}
+            sizes="(min-width: 1024px) 320px, (min-width: 640px) 280px, 40vw"
             className="hidden md:block h-80 -translate-y-6 mx-auto"
           />
         </div>
