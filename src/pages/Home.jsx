@@ -2,10 +2,13 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Section from "../components/ui/AnimationSection";
 import LandingPage from "../components/common/LandingPage";
 
-const BestSellersList = lazy(() => import("../components/common/BestSellersList"));
+const BestSellersList = lazy(() =>
+  import("../components/common/BestSellersList")
+);
 const OurOffer = lazy(() => import("../components/common/OurOffer"));
-const Testimonials = lazy(() => import("../components/common/Testimonials"));
-const ScrollBasedVelocityDemo = lazy(() => import("../components/common/ScrollBasedVelocityDemo"));
+const ScrollBasedVelocityDemo = lazy(() =>
+  import("../components/common/ScrollBasedVelocityDemo")
+);
 
 export default function Home() {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -27,9 +30,6 @@ export default function Home() {
         </Section>
         <Section>
           <OurOffer />
-        </Section>
-        <Section>
-          <Testimonials />
         </Section>
         {isDesktop && (
           <Section>

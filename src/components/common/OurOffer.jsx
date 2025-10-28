@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { Confetti } from "../magicui/confetti";
 import { BackgroundLines } from "../ui/background-lines";
 import { BorderBeam } from "../magicui/border-beam";
-import { TextAnimate } from "../magicui/text-animate";
 
 import { Link } from "react-router-dom";
 import Section from "../ui/AnimationSection";
@@ -68,14 +67,8 @@ export default function OurOffer() {
             <span className="inline-block px-4 py-2 bg-main text-white text-sm font-semibold rounded-full mb-4 animate-pulse">
               LIMITED TIME OFFER
             </span>
-            <h2>
-              <TextAnimate
-                animation="blurInUp"
-                by="word"
-                className={`text-3xl md:text-6xl font-bold mb-4`}
-              >
-                Special Book Sale
-              </TextAnimate>
+            <h2 className={`text-3xl md:text-6xl font-bold mb-4`}>
+              Special Book Sale
             </h2>
             <p className="text-base md:text-xl text-text max-w-2xl mx-auto">
               Get any book in our collection for just $20! Don't miss this

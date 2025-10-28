@@ -2,7 +2,7 @@ import img from "../../assets/imgs/senior-woman.webp";
 import ButtonToCategories from "../ui/ButtonToCategories";
 export default function LandingPage() {
   return (
-    <section className="landing-page min-h-screen bg-backgrounds px-4">
+    <section className="landing-page bg-backgrounds px-4">
       <div className="info relative px-2.5 py-9 sm:py-5 flex flex-wrap items-center justify-center gap-3 sm:gap-10">
         <h2 className="relative text-5xl sm:text-5xl lg:text-9xl font-bold text-main italic whitespace-nowrap">
           NYT <span className="sm:hidden text-white"> Books</span>

@@ -2,7 +2,6 @@ import ScrollCard from "./ScrollCards";
 import Card from "../ui/Card";
 import { NytContext } from "../../contexts/NytContext";
 import { useContext } from "react";
-import { TextAnimate } from "../magicui/text-animate";
 import Offer from "../../assets/imgs/Offer.webp";
 import BestSeller from "../../assets/imgs/BestSeller.webp";
 
@@ -14,15 +13,9 @@ export default function BestSellersList() {
   const { data } = useContext(NytContext);
 
   return (
-    <div className="best-sellers relative pt-10">
-      <h2>
-        <TextAnimate
-          animation="blurInUp"
-          by="word"
-          className={`text-3xl md:text-6xl font-bold mb-15 text-center`}
-        >
-          Best Sellers Lists
-        </TextAnimate>
+    <div className="best-sellers relative pt-20">
+      <h2 className={`text-3xl md:text-6xl font-bold mb-15 text-center`}>
+        Best Sellers Lists
       </h2>
       <div className="flex flex-col md:flex-row items-center justify-center rounded-2xl border-2 shadow-xl dark:shadow-button-border mb-10 py-10">
         <div className="imgs my-5 w-[40%] md:w-[19%] mx-auto bg-whites rounded-2xl bg-gradient-to-b from-whites via-main/20 to-whites flex-col justify-center items-center">

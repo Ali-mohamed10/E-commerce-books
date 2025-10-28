@@ -1,7 +1,6 @@
 import { useContext, useMemo } from "react";
 import { NytContext } from "../contexts/NytContext";
 import Card from "../components/ui/Card";
-import { SparklesText } from "../components/magicui/sparkles-text";
 import ScrollCards from "../components/common/ScrollCards";
 import Section from "../components/ui/AnimationSection";
 
@@ -20,23 +19,23 @@ export default function FavoriteBooks() {
           .filter((book) => book.isFavorite)
           .map((book) => ({
             title: book.title,
-          imgCover: book.book_image,
-          author: book.author,
-          price: book.price,
-          listName: list.list_name,
-          uniqueId: book.uniqueId,
-          isbn: book.primary_isbn13,
-        }))
-    ) || [],
+            imgCover: book.book_image,
+            author: book.author,
+            price: book.price,
+            listName: list.list_name,
+            uniqueId: book.uniqueId,
+            isbn: book.primary_isbn13,
+          }))
+      ) || [],
     [data]
   );
 
   return (
     <Section>
       <div className="best-sellers container mx-auto min-h-screen py-16">
-        <SparklesText className="flex justify-center text-3xl md:text-4xl font-bold mb-10 text-center">
+        <h2 className="flex justify-center text-3xl md:text-4xl font-bold mb-10 text-center">
           My Favorite Books
-        </SparklesText>
+        </h2>
         <ScrollCards>
           {favoriteBooks.length !== 0 ? (
             favoriteBooks.map((fav) => (

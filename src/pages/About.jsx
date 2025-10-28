@@ -1,4 +1,3 @@
-import { SparklesText } from "../components/magicui/sparkles-text";
 import Section from "../components/ui/AnimationSection";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
@@ -37,9 +36,9 @@ export default function About() {
       <section className="relative w-full">
         {/* Hero */}
         <div className="container mx-auto px-4 pt-16 pb-8 text-center">
-          <SparklesText className="text-3xl md:text-5xl font-semibold">
+          <h2 className="text-3xl md:text-5xl font-semibold">
             About NYT Books
-          </SparklesText>
+          </h2>
           <p className="mx-auto mt-4 text-sm text-muted-foreground">
             Discover, track, and fall in love with the world’s most talked-about
             books. We bring The New York Times Best Sellers lists to your
